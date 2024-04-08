@@ -18,4 +18,8 @@ public interface ProductDetailService {
     Page<ProductDetail> search(String key, Pageable pageable);
 
     Page<ProductDetail> getall(Integer key, Pageable pageable);
+
+    Page<ProductDetail> getByMoney(Integer key, int a, int b, Pageable pageable);
+
+    Page<ProductDetail> searchhome(String key,Integer status, Pageable pageable);
 }

@@ -13,28 +13,6 @@
     <form action="/productdetail/add" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="row">
             <div class="col-3"><input type="file" id="imageInput" name="anhsp"></div>
-<%--            <div class="col-3"><button onclick="uploadImage()" class="btn btn-primary">Upload</button></div>--%>
-
-
-
-<%--            <script>--%>
-<%--                function uploadImage() {--%>
-<%--                    var input = document.getElementById('imageInput');--%>
-<%--                    var file = input.files[0];--%>
-<%--                    var formData = new FormData();--%>
-<%--                    formData.append('file', file);--%>
-
-<%--                    fetch('/upload', {--%>
-<%--                        method: 'POST',--%>
-<%--                        body: formData--%>
-<%--                    })--%>
-<%--                        .then(response => response.text())--%>
-<%--                        .then(data => {--%>
-<%--                            document.getElementById('imageName').value = data; // Hiển thị tên tệp ảnh được trả về từ server--%>
-<%--                        })--%>
-<%--                        .catch(error => console.error('Error:', error));--%>
-<%--                }--%>
-<%--            </script>--%>
         </div>
 
 <%--        <input type="text" id="imageName" placeholder="Image Name" name="anhsp" readonly style="width: 300px">--%>
@@ -121,7 +99,7 @@
             </div>
             <div class="col-6">
                 <label class="form-label">Quantity</label>
-                <input type="text" id="idQuantity" class="form-control" name="quantity" value="${sp.quantity}">
+                <input type="text" id="idQuantity" class="form-control" name="quantity" value="${sp.quantity}" oninput="validateQuantity()">
                 <span id="messageQuantity" style="color: red;"></span>
             </div>
         </div>
@@ -137,7 +115,7 @@
         <div class="mb-3">
             <label class="form-label">Price</label>
             <span id="messagePrice" style="color: red;"></span>
-            <input type="text" id="idPrice" class="form-control" name="price" value="${sp.price}">
+            <input type="text" id="idPrice" class="form-control" name="price" value="${sp.price}" oninput="validatePrice()">
         </div>
 
         <div class="row">
@@ -157,33 +135,22 @@
                             <input type="search" name="keySearch" class="form-control" placeholder="Nhập tên cần tìm"/>
                         </div>
                         <button type="submit" class="btn btn-primary" >
-                            <i class="fas fa-search">Search</i>
+                            <a class="fas fa-search">Search</a>
                         </button>
                     </div>
                 </form>
             </div>
             <div class="col-3">
-<%--                <div class="input-group">--%>
-<%--                    <div class="row" >--%>
-<%--                        <div class="col-4"><label class="form-label">Trạng thái:</label></div>--%>
-<%--                        <div class="col-8">--%>
-<%--                            <select name="keyLoc" id="keyLoc" onchange="filterList()" class="form-select">--%>
-<%--                                <option value="0">Đang Bán</option>--%>
-<%--                                <option value="1">Dừng bán</option>--%>
-<%--                            </select>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
                 <form action="/productdetail/filter" method="get">
                     <div class="input-group">
                         <div class="form-outline" >
-                            <select name="keyLoc" id="keyLoc" onchange="filterList()" class="form-select">--%>
+                            <select name="keyLoc" id="keyLoc" onchange="filterList()" class="form-select">
                                 <option value="0">Đang Bán</option>
                                 <option value="1">Dừng bán</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary" >
-                            <i class="fas fa-search">Lọc</i>
+                            <a class="fas fa-search">Lọc</a>
                         </button>
                     </div>
                 </form>
@@ -206,8 +173,6 @@
         function validateForm() {
             var idQuantity = document.getElementById("idQuantity").value;
             var idPrice = document.getElementById("idPrice").value;
-            var messageQuantity = document.getElementById("messageQuantity");
-            var messagePrice = document.getElementById("messagePrice");
             if (idQuantity === "") {
                 alert("Vui lòng không để Quantity bị trống");
                 return false;
@@ -215,19 +180,25 @@
                 alert("Vui lòng không để Price bị trống");
                 return false;
             }
-
+            return true;
+        }
+        function validateQuantity() {
+            var idQuantity = document.getElementById("idQuantity").value;
+            var messageQuantity = document.getElementById("messageQuantity");
             if (isNaN(idQuantity)) {
                 messageQuantity.innerHTML = "Vui lòng chỉ nhập số vào ô Quantity.";
             } else {
                 messageQuantity.innerHTML = "";
             }
-
+        }
+        function validatePrice() {
+            var idPrice = document.getElementById("idPrice").value;
+            var messagePrice = document.getElementById("messagePrice");
             if (isNaN(idPrice)) {
                 messagePrice.innerHTML = "Vui lòng chỉ nhập số vào ô Price.";
             } else {
                 messagePrice.innerHTML = "";
             }
-            return true;
         }
     </script>
     <table class="table table-borderted mt-2">
@@ -267,7 +238,7 @@
                     <td>${ls.price}</td>
                     <td>${ls.status == 0 ? "Đang bán":"Ngừng bán"}</td>
                     <td><a class="btn btn-info" href="/productdetail/detail/${ls.id}">Chi tiết</a></td>
-                    <td><a class="btn btn-danger" href="/productdetail/updatett/${ls.id}">Đổi trạng thái</a></td>
+                    <td><a class="btn btn-danger" href="/productdetail/updatett/${ls.id}/${ls.status}">Đổi trạng thái</a></td>
                 </tr>
             </c:forEach>
         </tbody>

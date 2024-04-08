@@ -39,4 +39,13 @@ public class ProductDetailImpl implements ProductDetailService {
     public Page<ProductDetail> getall(Integer key, Pageable pageable) {
         return productDetailReponsitoty.getByStatus(key, pageable);
     }
+
+    public Page<ProductDetail> getByMoney(Integer key, int a, int b, Pageable pageable) {
+        return productDetailReponsitoty.getByMoney(key, a, b, pageable);
+    }
+
+    @Override
+    public Page<ProductDetail> searchhome(String key,Integer status, Pageable pageable) {
+        return productDetailReponsitoty.searchHome(key,status, pageable);
+    }
 }

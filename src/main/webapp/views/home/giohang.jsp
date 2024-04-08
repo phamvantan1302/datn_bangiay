@@ -21,12 +21,14 @@
             <td>${ls.productDetail.product.name}</td>
             <td id="price_${ls.id}">${ls.price}</td>
             <td>
-              <a class="btn btn-light btn-sm" onclick="decreaseQuantity(${ls.id})">-</a>
+              <a class="btn btn-light btn-sm" href="/admin/truslgio/${ls.id}">-</a>
               <span id="quantity_${ls.id}">${ls.quantity}</span>
-              <a class="btn btn-light btn-sm" onclick="increaseQuantity(${ls.id})">+</a>
+              <a class="btn btn-light btn-sm" href="/admin/congslgio/${ls.id}">+</a>
             </td>
             <td id="total_${ls.id}">${ls.subtotal}</td>
-            <td><a class="btn btn-danger" href="/admin/delete/${ls.cart.id}/${ls.id}">Delete</a></td>
+            <td>
+              <a class="btn btn-danger" href="/admin/delete/${ls.cart.id}/${ls.id}">Delete</a>
+            </td>
           </tr>
         </c:forEach>
       </tbody>

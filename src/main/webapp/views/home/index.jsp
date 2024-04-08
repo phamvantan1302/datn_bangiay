@@ -3,24 +3,46 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <%@ include file="header.jsp" %>
-<!-- Content -->
 
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true"></button>
+    </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/imagesp/banner-bg.png" class="d-block w-100" alt="">
-        </div>
-        <div class="carousel-item">
-            <img src="/imagesp/banner-bg.png" class="d-block w-100" alt="">
-        </div>
-        <div class="carousel-item">
-            <img src="/imagesp/banner-bg.png" class="d-block w-100" alt="">
+            <img src="/imagesp/banner-bg.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block" style="width: 500px; text-align: center">
+                <form class="input-group" action="/admin/searchname" method="get">&nbsp;
+                    <input type="search" name="keySearch" class="form-control" placeholder="Nhập tên cần tìm">
+                    <button type="submit" class="btn btn-success" >Search
+<%--                        <img src="/logo/search-icon.png" class="card-img-top" alt="">--%>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="container mt-5">
     <h2 style="text-align: center">Tất cả sản phẩm </h2><br>
+    <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2">
+            <form action="/admin/locmoney" method="get">
+                <div class="input-group">
+                    <div class="form-outline" >
+                        <select name="locmoney" class="form-select">
+                            <option value="0">Dưới 300K</option>
+                            <option value="1">300K-600K</option>
+                            <option value="2">600k-1tr</option>
+                            <option value="3">Trên 1tr</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-info" style="">Lọc</button>
+                </div>
+            </form>
+        </div>
+    </div><br>
     <div class="row">
         <c:forEach items="${listprd.content}" var="ls">
             <div class="col-3">
@@ -36,13 +58,12 @@
                                     <a href="/admin/addcart/${ls.id}" type="button" class="btn btn-info">Thêm giỏ</a>
                                 </div>
                                 <div class="col-6" style="text-align: end">
-                                    <a href="/admin/detailsp/${ls.id}" type="button" class="btn btn-info">Chi tiết</a>
+                                    <a href="/admin/detailsp/${ls.id}" type="button" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Thông tin chi tiết sản phẩm">Chi tiết</a>
                                 </div>
                             </div>
                         </div>
                     </div><br>
-                </c:forEach>
-                <br>
+                </c:forEach><br>
             </div>
         </c:forEach><br>
     </div>

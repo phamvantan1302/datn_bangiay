@@ -4,6 +4,7 @@ import com.example.gatn.Entity.*;
 import com.example.gatn.Entity.Color;
 import com.example.gatn.Entity.Image;
 import com.example.gatn.Repositoris.*;
+import com.example.gatn.Service.ImageService;
 import com.example.gatn.Service.ProductDetailService;
 import com.example.gatn.config.Config;
 import jdk.swing.interop.SwingInterOpUtils;
@@ -28,13 +29,18 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
     private List<CheckCart> lscc = new ArrayList<>();
 
     private CheckKhachHang ckh;
 
     private List<CheckCartDetail> lscheckcartdetail = new ArrayList<>();
+
     @Autowired
     private ImageRepository imageRepository;
+
+//    @Autowired
+//    private ImageService imageService;
 
     @Autowired
     private ProductDetailService productDetailService;
@@ -86,7 +92,7 @@ public class AdminController {
 
     @GetMapping("/hien-thi")
     public String hienthi(@RequestParam(defaultValue = "0", name = "page") Integer number, Model model) {
-        Pageable pageable = PageRequest.of(number, 7);
+        Pageable pageable = PageRequest.of(number, 8);
         List<Image> image = imageRepository.findAll();
         List<Category> category = categoryRepository.findAll();
         List<Size> size = sizeRepository.findAll();
@@ -109,14 +115,13 @@ public class AdminController {
         model.addAttribute("sole", sole);
         model.addAttribute("lace", lace);
         model.addAttribute("sockliner", sockliner);
-        model.addAttribute("listprd", listproduct);
         return "home/index";
     }
 
-    @GetMapping("/detailsp/{id}")
-    public String detailsp(@RequestParam(defaultValue = "0", name = "page") Integer number,
-                           @PathVariable("id") String id, Model model) {
-        ProductDetail Productdetail = productDetailReponsitoty.findById(Integer.valueOf(id)).orElse(null);
+    @GetMapping("/searchname")
+    public String search(@RequestParam( defaultValue = "0", name = "page") Integer number,
+                         Model model, @RequestParam("keySearch") String key){
+        Pageable pageable = PageRequest.of(number, 8);
         List<Image> image = imageRepository.findAll();
         List<Category> category = categoryRepository.findAll();
         List<Size> size = sizeRepository.findAll();
@@ -127,7 +132,11 @@ public class AdminController {
         List<Sole> sole = soleRepository.findAll();
         List<Lace> lace = laceRepository.findAll();
         List<Sockliner> sockliner = socklinerRepository.findAll();
-        model.addAttribute("sp", Productdetail);
+        Page<ProductDetail> listproduct = productDetailService.getall(0, pageable);
+        if(key != null){
+            listproduct = productDetailService.searchhome(key,0, pageable);
+        }
+        model.addAttribute("listprd", listproduct);
         model.addAttribute("image", image);
         model.addAttribute("category", category);
         model.addAttribute("size", size);
@@ -138,10 +147,83 @@ public class AdminController {
         model.addAttribute("sole", sole);
         model.addAttribute("lace", lace);
         model.addAttribute("sockliner", sockliner);
+        return "home/index";
+    }
 
+    @GetMapping("/locmoney")
+    public String filterList(@RequestParam( defaultValue = "0", name = "page") Integer number,
+                             @RequestParam("locmoney") String keyLoc, Model model) {
+        int a =0,b=0;
+        if(keyLoc.equals("0")){
+            a=0;
+            b=300000;
+        }if(keyLoc.equals("1")){
+            a=300000;
+            b=600000;
+        }if(keyLoc.equals("2")){
+            a=600000;
+            b=1000000;
+        }if(keyLoc.equals("3")){
+            a=1000000;
+            b=1000000000;
+        }if(keyLoc.equals("")){
+            a=0;
+            b=1000000000;
+        }
+        System.out.println("111111111111111111111111111111");
+        System.out.println(keyLoc);
+//        System.out.println(a);
+//        System.out.println(b);
         Pageable pageable = PageRequest.of(number, 8);
-        Page<ProductDetail> listproduct = productDetailReponsitoty.findAll(pageable);
+        List<Image> image = imageRepository.findAll();
+        List<Category> category = categoryRepository.findAll();
+        List<Size> size = sizeRepository.findAll();
+        List<Product> product = productRepository.findAll();
+        List<Material> material = materialRepository.findAll();
+        List<Brand> brand = brandRepository.findAll();
+        List<Color> color = colorRepository.findAll();
+        List<Sole> sole = soleRepository.findAll();
+        List<Lace> lace = laceRepository.findAll();
+        List<Sockliner> sockliner = socklinerRepository.findAll();
+        Page<ProductDetail> listproduct = productDetailService.getByMoney(0, a, b, pageable);
         model.addAttribute("listprd", listproduct);
+        model.addAttribute("image", image);
+        model.addAttribute("category", category);
+        model.addAttribute("size", size);
+        model.addAttribute("product", product);
+        model.addAttribute("material", material);
+        model.addAttribute("brand", brand);
+        model.addAttribute("color", color);
+        model.addAttribute("sole", sole);
+        model.addAttribute("lace", lace);
+        model.addAttribute("sockliner", sockliner);
+        return "home/index";
+    }
+
+    @GetMapping("/detailsp/{id}")
+    public String detailsp(@PathVariable("id") String id, Model model) {
+        ProductDetail Productdetail = productDetailReponsitoty.findById(Integer.valueOf(id)).orElse(null);
+        List<Image> images = imageRepository.findAll();
+        List<Category> category = categoryRepository.findAll();
+        List<Size> size = sizeRepository.findAll();
+        List<Product> product = productRepository.findAll();
+        List<Material> material = materialRepository.findAll();
+        List<Brand> brand = brandRepository.findAll();
+        List<Color> color = colorRepository.findAll();
+        List<Sole> sole = soleRepository.findAll();
+        List<Lace> lace = laceRepository.findAll();
+        List<Sockliner> sockliner = socklinerRepository.findAll();
+        model.addAttribute("sp", Productdetail);
+        model.addAttribute("image", images);
+        model.addAttribute("category", category);
+        model.addAttribute("size", size);
+        model.addAttribute("product", product);
+        model.addAttribute("material", material);
+        model.addAttribute("brand", brand);
+        model.addAttribute("color", color);
+        model.addAttribute("sole", sole);
+        model.addAttribute("lace", lace);
+        model.addAttribute("sockliner", sockliner);
         return "home/detailsp";
     }
 
@@ -159,6 +241,16 @@ public class AdminController {
         return "home/giohang";
     }
 
+    @GetMapping("/gioithieu")
+    public String hienthiGT(Model model){
+        return "home/aboutus";
+    }
+
+    @GetMapping("/lienhe")
+    public String hienthiLH(Model model){
+        return "home/lienhe";
+    }
+
     @GetMapping("delete/{id}/{iddetail}")
     public String deleteCart(@PathVariable("id") String id, @PathVariable("iddetail") String iddetail) {
         if (ckh == null) {
@@ -169,6 +261,46 @@ public class AdminController {
         } else {
             cartDetailRepository.deleteById(Integer.valueOf(iddetail));
             cartRepository.deleteById(Integer.valueOf(id));
+        }
+        return "redirect:/admin/hienthi";
+    }
+
+    @GetMapping("truslgio/{id}")
+    public String truslgio(@PathVariable("id") String id){
+        if (ckh == null) {
+            for (CheckCartDetail detail : lscheckcartdetail){
+                if (detail.getQuantity() > 0) {
+                    detail.setQuantity(detail.getQuantity() - 1);
+                    detail.setSubtotal((float) (detail.getQuantity() * detail.getPrice()));
+                    break;
+                }
+            }
+
+        } else {
+//            for(CartDetail cd: listdt){
+//                ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(cd.getId())).orElse(null);
+//                findProduct.setQuantity(findProduct.getQuantity()-cd.getQuantity());
+//            }
+        }
+        return "redirect:/admin/hienthi";
+    }
+
+    @GetMapping("congslgio/{id}")
+    public String congslgio(@PathVariable("id") String id){
+        if (ckh == null) {
+            for (CheckCartDetail detail : lscheckcartdetail){
+                if (detail.getProductDetail().getId() == Integer.valueOf(id)) {
+                    detail.setQuantity(detail.getQuantity() + 1);
+                    detail.setSubtotal((float) (detail.getQuantity() * detail.getPrice()));
+                    break;
+                }
+            }
+
+        } else {
+//            for(CartDetail cd: listdt){
+//                ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(cd.getId())).orElse(null);
+//                findProduct.setQuantity(findProduct.getQuantity()-cd.getQuantity());
+//            }
         }
         return "redirect:/admin/hienthi";
     }
@@ -248,8 +380,6 @@ public class AdminController {
                 }
 
             }
-
-
         }
         return "redirect:/admin/hien-thi";
     }
@@ -268,9 +398,6 @@ public class AdminController {
             model.addAttribute("lscart", cart);
             model.addAttribute("listc", listdt);
         }
-
-
-
         return "home/thanhtoan";
     }
 
@@ -278,7 +405,6 @@ public class AdminController {
     public String addOrder(@RequestParam("summoney") String tong, @RequestParam("phone_number") String numberPhone,
                            @RequestParam("address") String address,@RequestParam("name") String name,
                            @RequestParam("email") String mail, @RequestParam("mavoucher") String codeDis){
-
         Order order = Order.builder()
                 .phoneNumber(numberPhone)
                 .address(address)
@@ -299,20 +425,30 @@ public class AdminController {
                 .build();
         orderRepository.save(order);
 
-//        delete gio hang
-        List<CheckCartDetail> list = lscheckcartdetail;
-        list.clear();
+        List<CheckCartDetail> listcheck = lscheckcartdetail;
 
         //UPDATE sl
-//        ProductDetail sp = ProductDetail.builder()
-//
-//                .quantity(Integer.valueOf(sumquantity))
-//                .build();
-//        ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(idsp)).orElse(null);
-//        sp.setId(findProduct.getId());
-//        BeanUtils.copyProperties(sp, findProduct);
-//        productDetailService.add(findProduct);
+        List<CartDetail> listdt = cartDetailRepository.findAll();
+        if (ckh == null) {
+            for(CheckCartDetail cd: listcheck){
+                ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(cd.getId())).orElse(null);
+                findProduct.setQuantity(findProduct.getQuantity()-cd.getQuantity());
+                productDetailService.add(findProduct);
+            }
 
+        } else {
+            for(CartDetail cd: listdt){
+                ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(cd.getId())).orElse(null);
+                findProduct.setQuantity(findProduct.getQuantity()-cd.getQuantity());
+                productDetailService.add(findProduct);
+            }
+        }
+
+
+
+//        delete gio hang
+
+        listcheck.clear();
         return "redirect:/admin/hien-thi";
     }
 
@@ -414,6 +550,4 @@ public class AdminController {
 //
 //        return paymentUrl;
 //    }
-
-
 }

@@ -33,7 +33,7 @@
             <div class="col-6">
                 <label class="form-label">Phone number<span style="color: red">*</span></label>
                 <span id="messagePhoneNumber" style="color: red;"></span>
-                <input type="text" id="idPhoneNumber" class="form-control" name="phone_number" value="${order.phone_number}">
+                <input type="text" id="idPhoneNumber" class="form-control" name="phone_number" value="${order.phone_number}" oninput="validatePhoneNumber()">
             </div>
             <div class="col-6">
                 <label class="form-label">Address<span style="color: red">*</span></label>
@@ -51,7 +51,7 @@
             <div class="col-6">
                 <label class="form-label">Email<span style="color: red">*</span></label>
                 <span id="messageEmail" style="color: red;"></span>
-                <input type="text" id="idEmail" class="form-control" name="email" value="${order.email}">
+                <input type="text" id="idEmail" class="form-control" name="email" value="${order.email}" oninput="validateEmail()">
             </div>
         </div>
 
@@ -174,9 +174,6 @@
         var idAddress = document.getElementById("idAddress").value;
         var idName = document.getElementById("idName").value;
         var idEmail = document.getElementById("idEmail").value;
-        var messagePhoneNumber = document.getElementById("messagePhoneNumber");
-        var messageEmail = document.getElementById("messageEmail");
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (idPhoneNumber === "") {
             alert("Vui lòng không để Phone Number bị trống");
@@ -191,19 +188,26 @@
             alert("Vui lòng không để Email bị trống");
             return false;
         }
-
+        return true;
+    }
+    function validatePhoneNumber() {
+        var idPhoneNumber = document.getElementById("idPhoneNumber").value;
+        var messagePhoneNumber = document.getElementById("messagePhoneNumber");
         if (isNaN(idPhoneNumber)) {
             messagePhoneNumber.innerHTML = "Vui lòng chỉ nhập số vào ô Phone Number.";
         } else {
             messagePhoneNumber.innerHTML = "";
         }
+    }
+    function validateEmail() {
+        var idEmail = document.getElementById("idEmail").value;
+        var messageEmail = document.getElementById("messageEmail");
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(idEmail)) {
             messageEmail.innerHTML = "Vui lòng nhập địa chỉ email hợp lệ.";
         } else {
             messageEmail.innerHTML = "";
         }
-
-        return true;
     }
 </script>
 <br><br>

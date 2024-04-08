@@ -138,7 +138,8 @@ public class ProductDetailController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam( defaultValue = "0", name = "page") Integer number, Model model, @RequestParam("keySearch") String key){
+    public String search(@RequestParam( defaultValue = "0", name = "page") Integer number,
+                         Model model, @RequestParam("keySearch") String key){
         Pageable pageable = PageRequest.of(number, 4);
         List<Category> category = categoryRepository.findAll();
         List<Size> size = sizeRepository.findAll();
@@ -351,14 +352,14 @@ public class ProductDetailController {
         return "redirect:/productdetail/hienthi";
     }
 
-    @PutMapping("updatett/{id}")
-    public String updatett(@RequestParam("status") String status, @RequestParam("id") String id) {
-        ProductDetail sp = ProductDetail.builder()
-                .status(Integer.valueOf(0))
-                .build();
+    @GetMapping("updatett/{id}/{status}")
+    public String updatett(@PathVariable("id") String id, @PathVariable("status") String tt) {
         ProductDetail findProduct = productDetailReponsitoty.findById(Integer.valueOf(id)).orElse(null);
-        sp.setId(findProduct.getId());
-        BeanUtils.copyProperties(sp, findProduct);
+        if(tt.equals("0")){
+            findProduct.setStatus(1);
+        }else{
+            findProduct.setStatus(0);
+        }
         productDetailService.add(findProduct);
         return "redirect:/productdetail/hienthi";
     }
