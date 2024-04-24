@@ -14,16 +14,16 @@
         <div class="row">
             <div class="col-6">
                 <label class="form-label">Code</label>
-                <input type="text" class="form-control" name="code" value="${material.code}">
+                <input type="text" class="form-control" name="code">
             </div>
             <div class="col-6">
                 <label class="form-label">name</label>
-                <input type="text" class="form-control" name="name" value="${material.name}">
+                <input type="text" class="form-control" name="name">
             </div>
         </div>
         <button class="btn btn-success" type="submit">Add</button>
     </form>
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <td>Code</td>

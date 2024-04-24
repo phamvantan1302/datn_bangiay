@@ -15,22 +15,28 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success" style="color: #1e7898">
-    <div class="container-sm">
-        <div class="container" id="navbarNav" style="text-align: center">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="/admin/hien-thi">Trang chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="/admin/gioithieu">Giới thiệu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="/admin/lienhe">Liên hệ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="color: white;text-align: end" href="/admin/hienthi">Giỏ Hàng</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+            <div class="container-sm">
+                <div class="container" id="navbarNav" style="text-align: center">
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white" href="/admin/hien-thi">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white" href="/admin/gioithieu">Giới thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white" href="/admin/lienhe">Liên hệ</a>
+                        </li>
+                    </ul>
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white;text-align: end" href="/admin/hienthi">Giỏ Hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white;text-align: end" href="/admin/donhang">Đơn hàng</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
 </nav>

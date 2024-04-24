@@ -14,26 +14,26 @@
         <div class="row">
             <div class="col-6">
                 <label class="form-label">Code</label>
-                <input type="text" class="form-control" name="code" value="${sockliner.code}">
+                <input type="text" class="form-control" name="code">
             </div>
             <div class="col-6">
                 <label class="form-label">name</label>
-                <input type="text" class="form-control" name="name" value="${sockliner.name}">
+                <input type="text" class="form-control" name="name">
             </div>
         </div>
         <div class="row">
             <div class="col-6">
                 <label class="form-label">color</label>
-                <input type="text" class="form-control" name="color" value="${sockliner.color}">
+                <input type="text" class="form-control" name="color">
             </div>
             <div class="col-6">
                 <label class="form-label">material</label>
-                <input type="text" class="form-control" name="material" value="${sockliner.material}">
+                <input type="text" class="form-control" name="material">
             </div>
         </div>
         <button class="btn btn-success" type="submit">Add</button>
     </form>
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <td>code</td>
@@ -52,8 +52,7 @@
                 <th>${ls.material}</th>
                 <td>
                     <a class="btn btn-info" href="/pdtt/detail_sockliner/${ls.id}">Detail</a>
-                </td>
-                <td>
+
                     <a class="btn btn-danger" href="/pdtt/delete_sockliner/${ls.id}">Delete</a>
                 </td>
             </tr>

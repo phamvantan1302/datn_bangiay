@@ -4,24 +4,28 @@
 <%@ include file="header.jsp" %>
 <div class="container mt-5">
     <h2>THÔNG TIN CHI TIẾT SP </h2><br>
-    <div class="row">
-        <div class="col-3">
-            <c:forEach items="${sp.image }" var="image">
-                <img src="/imagesp/${image.name}" class="card-img-top" alt="">
-            </c:forEach>
+    <form action="/admin/addgioctsp?id=${sp.id}" method="get">
+        <div class="row">
+            <div class="col-3">
+                <c:forEach items="${sp.image }" var="image">
+                    <img src="/imagesp/${image.name}" class="card-img-top" alt="">
+                </c:forEach>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-7">
+                <h3 class="row">${sp.product.name}</h3><br>
+                <label class="form-label"><b>Giá bán:</b> <span style="color: red">${sp.price} VND</span></label><br>
+                <label class="form-label"><b>Số lượng trong kho:</b> <i>${sp.quantity}</i></label><br>
+                <label class="form-label"><b>Loại giày:</b> <i>${sp.category.name}</i></label><br>
+                <label class="form-label"><b>Chất liệu sản phẩm:</b> <i>${sp.material.name}</i></label><br>
+                <label class="form-label"><b>Hãng sản phẩm:</b> <i>${sp.brand.name}</i></label><br>
+                <label class="form-label"><b>Chất liệu đế giày:</b> <i>${sp.sole.name}</i></label>
+                <br>
+                <button class="btn btn-success" type="submit">Thêm vào giỏ</button>
+            </div>
         </div>
-        <div class="col-2"></div>
-        <div class="col-7">
-            <h3 class="row">${sp.product.name}</h3><br>
-            <label class="form-label"><b>Giá bán:</b> <span style="color: red">${sp.price} VND</span></label><br>
-            <label class="form-label"><b>Số lượng trong kho:</b> <i>${sp.quantity}</i></label><br>
-            <label class="form-label"><b>Loại giày:</b> <i>${sp.category.name}</i></label><br>
-            <label class="form-label"><b>Chất liệu sản phẩm:</b> <i>${sp.material.name}</i></label><br>
-            <label class="form-label"><b>Hãng sản phẩm:</b> <i>${sp.brand.name}</i></label><br>
-            <label class="form-label"><b>Chất liệu đế giày:</b> <i>${sp.sole.name}</i></label>
-
-        </div>
-    </div><hr>
+    </form>
+        <hr>
 
     <div>
         <h4>Mô tả sản phẩm</h4>

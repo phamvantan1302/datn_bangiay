@@ -28,7 +28,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class OnlineController {
 
     private List<CheckCart> lscc = new ArrayList<>();
 
@@ -241,6 +241,16 @@ public class AdminController {
         return "home/giohang";
     }
 
+    @GetMapping("/donhang")
+    public String donhang(Model model){
+        if(ckh == null){
+        }else{
+            List<Order> list = orderRepository.getByClient(ckh.getId());
+            model.addAttribute("order", list);
+        }
+        return "home/lichsudh";
+    }
+
     @GetMapping("/gioithieu")
     public String hienthiGT(Model model){
         return "home/aboutus";
@@ -305,6 +315,84 @@ public class AdminController {
         return "redirect:/admin/hienthi";
     }
 
+    @GetMapping("/addgioctsp/{id}")
+    public String addGioCtSp(@PathVariable("id") String id){
+        int quantity = 1;
+        java.util.Date date = new java.util.Date();
+        ProductDetail productdetail = productDetailReponsitoty.findById(Integer.valueOf(id)).orElse(null);
+        if (ckh == null) {
+            if (lscheckcartdetail.size() == 0) {
+                CheckCart ls = new CheckCart(productdetail.getId(), null, date, null);
+                lscheckcartdetail.add(new CheckCartDetail(productdetail.getId(), ls, productdetail, quantity, productdetail.getPrice(), quantity * productdetail.getPrice()));
+            } else {
+                for (CheckCartDetail detail : lscheckcartdetail) {
+                    if (detail.getProductDetail().getId() == Integer.valueOf(id)) {
+                        detail.setQuantity(detail.getQuantity() + 1);
+                        detail.setSubtotal((float) (detail.getQuantity() * detail.getPrice()));
+                        break;
+                    }else{
+                        CheckCart ls = new CheckCart(productdetail.getId(), null, date, null);
+                        lscheckcartdetail.add(new CheckCartDetail(productdetail.getId(), ls, productdetail, quantity, productdetail.getPrice(), quantity * productdetail.getPrice()));
+                        break;
+                    }
+                }
+            }
+        } else {
+            //them vao gio db
+            System.out.println("vao khach hang no null");
+
+            if (lscheckcartdetail.size() == 0) {
+                Client client = clientRepository.findById(ckh.id).orElse(null);
+                Cart cart = Cart.builder()
+                        .client(client)
+                        .createDate(date)
+                        .dateOfPayment(null)
+                        .build();
+                cartRepository.save(cart);
+                CartDetail cartDetail = CartDetail.builder()
+                        .cart(cart)
+                        .productDetail(productdetail)
+                        .quantity(quantity)
+                        .price(productdetail.getPrice())
+                        .subtotal(quantity * productdetail.getPrice())
+                        .build();
+                cartDetailRepository.save(cartDetail);
+            } else {
+                List<CartDetail> lscartdetail = cartDetailRepository.findAll();
+                for (CartDetail detail : lscartdetail) {
+                    if (detail.getProductDetail().getId() == Integer.valueOf(id)) {
+                        detail.setQuantity(detail.getQuantity() + 1);
+                        detail.setSubtotal((float) (detail.getQuantity() * detail.getPrice()));
+                        CartDetail findcart = cartDetailRepository.findById(Integer.valueOf(id)).orElse(null);
+                        detail.setId(findcart.getId());
+                        BeanUtils.copyProperties(detail, findcart);
+                        cartDetailRepository.save(findcart);
+                        break;
+                    }else{
+                        Client client = clientRepository.findById(ckh.id).orElse(null);
+                        Cart cart = Cart.builder()
+                                .client(client)
+                                .createDate(date)
+                                .dateOfPayment(null)
+                                .build();
+                        cartRepository.save(cart);
+                        Cart carts = cartRepository.findById(cart.getId()).orElse(null);
+                        CartDetail cartDetail = CartDetail.builder()
+                                .cart(carts)
+                                .productDetail(productdetail)
+                                .quantity(quantity)
+                                .price(productdetail.getPrice())
+                                .subtotal(quantity * productdetail.getPrice())
+                                .build();
+                        cartDetailRepository.save(cartDetail);
+                        break;
+                    }
+                }
+
+            }
+        }
+        return "redirect:/admin/hienthi";
+    }
     @GetMapping("/addcart/{id}")
     public String addCart(@PathVariable("id") String id) {
         int quantity = 1;
@@ -550,4 +638,11 @@ public class AdminController {
 //
 //        return paymentUrl;
 //    }
+
+    @GetMapping("/login")
+    public String dangNhap(Model model){
+
+        return "home/login";
+        //return "admin/hien-thi";
+    }
 }

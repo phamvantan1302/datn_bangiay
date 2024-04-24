@@ -27,7 +27,7 @@
         </div>
         <button class="btn btn-success" type="submit">Add</button>
     </form>
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <td>Code</td>
